@@ -21,3 +21,13 @@ jobs:
       - store_artifacts:
           path: ~/app/dist/
           destination: app
+
+  deploy:
+    docker:
+      - image: circleci/node:14
+    working_directory: ~/app
+    steps:
+      - attach_workspace:
+          at: ~/app
+      - run: |
+          ssh ubuntu@3.17.187.27 "cd ~/home/fullstack-todo-nestjs && git fetch && git reset --hard origin/master && ./deploy.sh"
